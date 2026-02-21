@@ -10,23 +10,38 @@
   --cpu:#4C4C4C;
   --radius:18px;
   --shadow:0 8px 24px rgba(0,0,0,.08);
-  --font: "BIZ UDPGothic","BIZ UDPゴシック",system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  /* フォント：タイトル/項目名以外は細い */
+  --fontHead: "BIZ UDPGothic","BIZ UDPゴシック",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --fontThin: system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  /* 固定セル（全形式同一） */
+  --tagw: 56px;
+  --tagh: 22px;
+
+  /* 罫線：外枠は強、内部は控えめ */
+  --bOuter: 2px;
+  --bMid: 1px;
+  --bThin: 1px;
 }
 
 html,body{height:100%;}
 body{
   margin:0;
-  font-family:var(--font);
+  font-family:var(--fontThin);
   font-size:14px;
   color:var(--text);
   background:
     linear-gradient(180deg, #68b7ff 0%, #9ed5ff 220px, #e8f4ff 221px, #e8f4ff 100%);
 }
+
 #app{
   width:900px;
   margin:20px auto 40px;
 }
+
 .header{ margin-bottom:12px; }
+
 .titleRow{
   background:#f04b36;
   color:#fff;
@@ -38,12 +53,13 @@ body{
   justify-content:space-between;
   gap:12px;
 }
-.title{ margin:0; font-size:40px; letter-spacing:.5px; }
+.title{ margin:0; font-family:var(--fontHead); font-size:40px; letter-spacing:.5px; }
 .pill{
   border:0; border-radius:999px;
   padding:10px 16px;
   background:#fff; color:#f04b36;
   font-weight:700; cursor:pointer;
+  font-family:var(--fontHead);
 }
 .pill:active{transform:scale(.98);}
 
@@ -54,17 +70,29 @@ body{
   padding:14px 16px 16px;
   margin:14px 0;
 }
+
 .cardHead{
   display:flex; align-items:center; justify-content:space-between;
   gap:10px; margin-bottom:10px;
 }
 .cardTitle{
   background:#111; color:#fff;
+  font-family:var(--fontHead);
   font-weight:800;
   padding:6px 10px;
   border-radius:6px;
 }
+.cardTitleRow{ display:flex; align-items:center; gap:10px; }
 .cardActions{ display:flex; align-items:center; gap:10px; }
+
+.tagNote{
+  font-family:var(--fontThin);
+  font-size:11px;
+  font-weight:500;
+  color:#000;
+  margin-left:8px;
+}
+
 .btn{
   border:1px solid #000;
   background:#fff;
@@ -72,14 +100,19 @@ body{
   padding:6px 12px;
   cursor:pointer;
   font-weight:700;
+  font-family:var(--fontHead);
 }
 .btn:active{transform:scale(.98);}
+
 .errInline{
   font-size:11px;
   color:var(--err);
   font-weight:800;
   min-height:14px;
+  font-family:var(--fontThin);
 }
+
+/* rule */
 .ruleGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -104,6 +137,7 @@ body{
   border-radius:6px;
   padding:4px 8px;
   font-weight:800;
+  font-family:var(--fontHead);
 }
 .radio{ display:inline-flex; align-items:center; gap:6px; }
 .sel{
@@ -111,29 +145,64 @@ body{
   border-radius:8px;
   padding:6px 10px;
   background:#fff;
+  font-family:var(--fontThin);
 }
 .inp{
   border:1px solid #bbb;
   border-radius:8px;
   padding:6px 10px;
   background:#fff;
+  font-family:var(--fontThin);
 }
 .inp.small{width:70px;}
-.inp.center{text-align:center; width:52px;}
 .cpuBox{display:flex; gap:12px; align-items:center;}
 
+/* タグ設定：横スク禁止（重要） */
 .tagWrap{ display:flex; gap:18px; align-items:flex-start; }
-.tagTableWrap{ flex:1; overflow-x:auto; padding-bottom:2px; }
-.sheet{ border-collapse:collapse; background:#fff; }
+.tagTableWrap{
+  flex:1;
+  overflow-x:hidden;
+  padding-bottom:2px;
+}
+
+/* タグ設定テーブル群（1段/2段） */
+.tagTables{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* タグ設定表：角丸、固定幅（伸びない） */
+.sheet{
+  border-collapse:separate;
+  border-spacing:0;
+  background:#fff;
+  table-layout:fixed;
+  width:max-content; /* 減っても拡大しない */
+  border:var(--bOuter) solid #000;
+  border-radius:12px;
+  overflow:hidden;
+}
 .sheet th, .sheet td{
-  border:2px solid #000;
+  border-right:var(--bThin) solid #333;
+  border-bottom:var(--bThin) solid #333;
   padding:0;
-  height:34px;
-  min-width:86px;
+  height:var(--tagh);
+  width:var(--tagw);
   text-align:center;
   vertical-align:middle;
+  overflow:hidden;
 }
-.sheet .rowHead{ min-width:72px; background:#fff; font-weight:900; }
+.sheet tr:last-child th, .sheet tr:last-child td{ border-bottom:0; }
+.sheet th:last-child, .sheet td:last-child{ border-right:0; }
+
+.sheet .rowHead{
+  width:64px;
+  background:#fff;
+  font-weight:900;
+  font-family:var(--fontHead);
+}
+
 .cellInp{
   width:100%; height:100%;
   border:0; margin:0;
@@ -141,86 +210,165 @@ body{
   text-align:center;
   background:transparent;
   outline:none;
+  font-family:var(--fontThin);
 }
 .cellInp.smalltxt{font-size:13px;}
 .colorSel{
   width:100%; height:100%;
   border:0;
-  background:transparent;
+  background:transparent; /* セルを塗らない */
   font:inherit;
   outline:none;
-  appearance:none;
-  text-align:center;
+  appearance:auto;
   cursor:pointer;
+  font-family:var(--fontThin);
 }
-.cpuMini{
-  width:140px;
-  border:2px solid #000;
-  border-radius:10px;
-  overflow:hidden;
-  background:#fff;
-}
-.cpuMiniHead{
-  font-weight:900;
-  padding:8px 10px;
-  border-bottom:2px solid #000;
-  text-align:center;
-}
-.cpuMiniBody{ padding:10px; text-align:center; }
 
+/* 順位入力見本 */
 .pinRow{ display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
-.pinPreview{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.pinPreview{ display:flex; gap:6px; align-items:flex-start; flex-wrap:wrap; }
+
+/* バッジ（高さ狭める） */
 .badge{
-  display:flex;
-  flex-direction:column;
-  border:2px solid #000;
+  width:var(--tagw);
+  border:var(--bThin) solid #333;
   border-radius:8px;
   overflow:hidden;
-  min-width:86px;
+  display:flex;
+  flex-direction:column;
 }
 .badgeTop{
-  padding:4px 6px;
+  height:var(--tagh);
+  padding:0 4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-weight:900;
-  text-align:center;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  font-family:var(--fontThin);
 }
-.badgeBot{ padding:4px 6px; text-align:center; font-weight:800; }
+.badgeBot{
+  height:var(--tagh);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  background:#fff; /* キーは色を塗らない */
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-family:var(--fontThin);
+}
+.cpuSpacer{ width:18px; } /* gap=6px の3倍 */
 
-.smallLine{ font-size:11px; margin:8px 0 10px; color:#000; }
-.rankWrap{ overflow-x:auto; padding-bottom:2px; }
-.rankTable{ border-collapse:collapse; background:#fff; }
+/* 順位入力 */
+.smallLine{ font-size:11px; margin:8px 0 10px; color:#000; font-family:var(--fontThin); }
+
+/* 順位入力だけ横スク可（重要） */
+.rankWrap{
+  overflow-x:auto;
+  padding-bottom:2px;
+}
+
+/* 順位表：角丸・外枠強、内部控えめ */
+.rankTable{
+  border-collapse:separate;
+  border-spacing:0;
+  background:#fff;
+  table-layout:fixed;
+  width:max-content;
+  border:var(--bOuter) solid #000;
+  border-radius:12px;
+  overflow:hidden;
+}
+
 .rankTable th, .rankTable td{
-  border:2px solid #000;
-  width:32px; height:28px;
-  text-align:center;
   padding:0;
+  width:var(--tagw);
+  height:var(--tagh);
+  text-align:center;
+  vertical-align:middle;
+  font-family:var(--fontThin);
 }
-.rankTable .thin{ border:1px dotted #999; }
-.rankTable .headTop{ font-weight:900; }
-.rankTable .ptsCol, .rankTable .rankCol{
-  width:54px;
-  background:#e9e9e9;
+
+/* 共通セル線（薄め） */
+.rankCellTd{
+  border-right:var(--bThin) solid #333;
+  border-bottom:var(--bThin) dotted #666;
+}
+.rankTable tr:last-child td.rankCellTd{ border-bottom:0; }
+.rankCellTd:last-child{ border-right:0; }
+
+/* ヘッダーは強め */
+.rankHeadTd{
+  border-right:var(--bThin) solid #333;
+  border-bottom:var(--bOuter) solid #000;
   font-weight:900;
+  font-family:var(--fontHead);
 }
-.rankTable .rankCol{width:46px;}
-.rankTable .sepRow td{border-top:4px solid #000;}
-.rankInput{
-  width:100%; height:100%;
-  border:0; margin:0;
+.rankHeadTd:last-child{ border-right:0; }
+
+/* 得点／順位 列（濃いグレー） */
+.srCol{
+  width:52px;
+  background:#cfcfcf;
+  font-weight:900;
+  font-family:var(--fontHead);
+  border-right:var(--bOuter) solid #000;
+}
+.srHead{
+  width:52px;
+  background:#cfcfcf;
+  border-right:var(--bOuter) solid #000;
+}
+
+/* 8レース区切り（点線） */
+.raceSplit{
+  border-right:var(--bThin) dotted #666 !important;
+}
+
+/* 24人制の12位と13位の区切り（太線） */
+.sepTop{
+  border-top:var(--bOuter) solid #000 !important;
+}
+
+/* 入力セル：表示オーバーレイ */
+.rankCell{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+.rankKey{
+  width:100%;
+  height:100%;
+  border:0;
+  margin:0;
+  background:transparent;
+  outline:none;
+  color:transparent;      /* キー文字は見せない */
+  caret-color:#000;       /* カーソルは見える */
   font:inherit;
   text-align:center;
-  outline:none;
-  background:transparent;
+  font-family:var(--fontThin);
 }
-.rankInput[disabled]{background:#f2f2f2; color:#999;}
-.missCol{
-  height:18px;
-  font-size:11px;
-  color:var(--err);
+.rankDisp{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-weight:900;
+  padding:0 2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  pointer-events:none;
+  font-family:var(--fontThin);
 }
+
+/* コース名 */
 .courseInp{
   width:100%; height:100%;
   border:0; margin:0;
@@ -229,6 +377,21 @@ body{
   text-align:left;
   outline:none;
   background:transparent;
+  color:#000;
+  font-family:var(--fontThin);
+}
+
+/* 入力ミス・ロック：枠不要 */
+.missTd, .lockTd{
+  border:0 !important;
+  background:transparent !important;
+  height:18px;
+}
+.missMsg{
+  font-size:11px;
+  color:var(--err);
+  font-weight:900;
+  font-family:var(--fontThin);
 }
 .lockBtn{
   width:100%; height:100%;
@@ -238,8 +401,8 @@ body{
   font-size:16px;
 }
 .lockBtn[disabled]{cursor:not-allowed; opacity:.4;}
-.cellErr{ outline:2px solid var(--err); outline-offset:-2px; }
 
+/* 結果表示：横スクなし・折り返し */
 .copyLine{margin:8px 0;}
 .outLine{
   min-height:22px;
@@ -248,15 +411,21 @@ body{
   background:#fff;
   border:1px solid #bbb;
   border-radius:8px;
-  white-space:nowrap;
-  overflow-x:auto;
+  font-family:var(--fontThin);
 }
+.outWrap{
+  white-space:normal;
+  overflow:hidden;
+  word-break:break-word;
+}
+
 .optionRow{
   display:flex;
   align-items:center;
   gap:12px;
   flex-wrap:wrap;
   margin:10px 0;
+  font-family:var(--fontThin);
 }
 .optTitle{
   background:#d8efff;
@@ -264,6 +433,7 @@ body{
   padding:4px 8px;
   font-weight:900;
   min-width:92px;
+  font-family:var(--fontHead);
 }
 .chk{display:inline-flex; align-items:center; gap:6px;}
 .chk.small{font-size:11px;}
@@ -280,6 +450,7 @@ body{
   padding:4px 8px;
   border-radius:6px;
   font-weight:900;
+  font-family:var(--fontHead);
 }
 .log{
   font-size:11px;
@@ -287,17 +458,17 @@ body{
   min-height:18px;
   color:#000;
   white-space:pre-wrap;
+  font-family:var(--fontThin);
 }
-.autoCopyMsg{ font-size:11px; font-weight:900; }
-.autoCopyMsg.ok{color:var(--ok);}
-.autoCopyMsg.ng{color:var(--err);}
-.certText{font-size:11px; font-weight:900; color:#000;}
+.certText{font-size:11px; font-weight:900; color:#000; font-family:var(--fontThin);}
+.copyFailMsg{ font-size:11px; font-weight:900; color:var(--err); font-family:var(--fontThin); }
 
+/* pinBar */
 .pinBar{
   position:fixed;
   top:0; left:0; right:0;
   background:rgba(0,0,0,.65);
-  padding:10px 0;
+  padding:5px 0;
   z-index:50;
 }
 .pinBarInner{
@@ -305,13 +476,19 @@ body{
   margin:0 auto;
   background:#fff;
   border-radius:16px;
-  padding:10px 12px;
+  padding:6px 8px;
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:10px;
 }
-.pinBarContent{ display:flex; gap:6px; flex-wrap:wrap; }
+.pinBarContent{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  overflow:hidden;
+}
 .pinClose{
   border:0;
   background:#ff6a6a;
@@ -322,6 +499,7 @@ body{
   font-size:18px;
   cursor:pointer;
   font-weight:900;
+  font-family:var(--fontHead);
 }
 .hidden{display:none !important;}
 
@@ -345,6 +523,6 @@ body{
   background:#f04b36;
   color:#fff;
 }
-.modalTitle{font-weight:900;}
+.modalTitle{font-weight:900; font-family:var(--fontHead);}
 .modalBody{ max-height:60vh; overflow:auto; padding:12px; }
-.specText{font-size:12px; color:#000;}
+.specText{font-size:12px; color:#000; font-family:var(--fontThin);}
