@@ -25,21 +25,21 @@
           <div class="ruleCol">
             <div class="ruleLine">
               <span class="label">対戦人数</span>
-              <label class="radio"><input type="radio" name="players" value="12" checked>12人制</label>
-              <label class="radio"><input type="radio" name="players" value="24">24人制</label>
+              <label class="radio"><input type="radio" name="players" value="12">12人制</label>
+              <label class="radio"><input type="radio" name="players" value="24" checked>24人制</label>
             </div>
-            <div class="ruleLine">
-              <span class="label">レース数</span>
-              <label class="radio"><input type="radio" name="races" value="8" checked>8</label>
-              <label class="radio"><input type="radio" name="races" value="12">12</label>
-            </div>
-          </div>
-
-          <div class="ruleCol">
             <div class="ruleLine">
               <span class="label">対戦形式</span>
               <select id="selMode" class="sel"></select>
             </div>
+            <div class="ruleLine">
+              <span class="label">レース数</span>
+              <label class="radio"><input type="radio" name="races" value="8">8</label>
+              <label class="radio"><input type="radio" name="races" value="12" checked>12</label>
+            </div>
+          </div>
+
+          <div class="ruleCol">
             <div class="ruleLine">
               <span class="label">通過組数</span>
               <input id="inpQualify" class="inp small" inputmode="numeric" autocomplete="off" tabindex="-1" />
@@ -47,8 +47,8 @@
             <div class="ruleLine">
               <span class="label">CPU加算</span>
               <div class="cpuBox">
-                <label class="radio"><input type="radio" name="cpuCalc" value="MKB" checked>MKB</label>
-                <label class="radio"><input type="radio" name="cpuCalc" value="SUMMIT">SUMMIT</label>
+                <label class="radio"><input type="radio" name="cpuCalc" value="MKB" checked>MKBルール</label>
+                <label class="radio"><input type="radio" name="cpuCalc" value="SUMMIT">SUMMITルール</label>
               </div>
             </div>
           </div>
@@ -57,38 +57,38 @@
 
       <section class="card">
         <div class="cardHead">
-          <div class="cardTitle">タグ設定</div>
+          <div class="cardTitle">
+            タグ設定
+            <span class="tagNote">※キーは半角英数1字のみ</span>
+          </div>
           <div class="cardActions">
             <button id="btnResetTags" class="btn">Reset Tags</button>
             <span id="dupKeyMsg" class="errInline" aria-live="polite"></span>
           </div>
         </div>
 
+        <!-- 横スク禁止のまま、ここに 1段/2段 のテーブルを生成する -->
         <div class="tagWrap">
           <div class="tagTableWrap">
-            <table class="sheet" id="tagTable" aria-label="タグ設定"></table>
-          </div>
-
-          <div class="cpuMini">
-            <div class="cpuMiniHead">★CPU</div>
-            <div class="cpuMiniBody">
-              <input id="inpCpuKey" class="inp center" maxlength="1" autocomplete="off" />
-            </div>
+            <div id="tagTables" class="tagTables" aria-label="タグ設定"></div>
           </div>
         </div>
       </section>
 
       <section class="card">
         <div class="cardHead">
-          <div class="cardTitle">順位入力</div>
+          <div class="cardTitleRow">
+            <div class="cardTitle">順位入力</div>
+            <button id="btnPin" class="btn">タグ固定</button>
+          </div>
           <div class="cardActions">
             <button id="btnResetAll" class="btn">Reset</button>
           </div>
         </div>
 
+        <!-- 見本は「順位入力」と左揃え -->
         <div class="pinRow">
-          <button id="btnPin" class="btn">タグ画面固定 [ON]</button>
-          <div id="pinPreview" class="pinPreview" aria-label="タグ固定プレビュー"></div>
+          <div id="pinPreview" class="pinPreview" aria-label="タグ見本"></div>
         </div>
 
         <div class="smallLine">
@@ -103,15 +103,19 @@
           <div class="cardTitle">集計結果</div>
           <div class="cardActions">
             <button id="btnCopyMain" class="btn">copy</button>
+            <span id="copyFailMsg" class="copyFailMsg" aria-live="polite"></span>
           </div>
         </div>
 
         <div class="copyLine">
-          <div id="outMain" class="outLine" title="コピペ用"></div>
+          <div id="outMain" class="outLine outWrap" title="コピペ用"></div>
         </div>
 
         <div class="optionRow">
           <div class="optTitle">表示オプション</div>
+          <label class="radio"><input type="radio" name="dispMode" value="normal" checked>通常</label>
+          <label class="radio"><input type="radio" name="dispMode" value="sumOnly">合計のみ</label>
+
           <label class="chk"><input id="chkShowSum" type="checkbox">合計点</label>
           <label class="chk"><input id="chkShowCert" type="checkbox">勝ち確表示</label>
           <span id="certText" class="certText"></span>
@@ -123,12 +127,10 @@
           <div class="optTitle">集計オプション</div>
           <button id="btnCopyOpt" class="btn">copy</button>
           <select id="selView" class="sel"></select>
-          <label class="chk"><input id="chkShowOthers" type="checkbox" checked>自チーム以外表示</label>
-          <span id="autoCopyMsg" class="autoCopyMsg" aria-live="polite"></span>
         </div>
 
         <div class="copyLine">
-          <div id="outOpt" class="outLine"></div>
+          <div id="outOpt" class="outLine outWrap"></div>
         </div>
 
         <div class="divider"></div>
